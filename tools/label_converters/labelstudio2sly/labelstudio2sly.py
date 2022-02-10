@@ -2,7 +2,7 @@
 # coding: utf-8
 
 """
-    Labelbox => Supervisely format
+    Labelstudio => Supervisely format
 
     https://docs.supervise.ly/ann_format/
 
@@ -16,7 +16,7 @@
        ├── img_x.jpeg
        ├── img_y.jpeg
        └── img_z.jpeg
-    ── lb_labels_file
+    ── ls_labels_file
 
     \b
     Output:
@@ -54,13 +54,13 @@ SUPPORTED_IMAGE_FORMATS = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG"]
 
 def main(
     images_folder=None,
-    lb_labels_file=None,
+    ls_labels_file=None,
     out_path=None,
     project_name=None,
     dataset_name=None,
 ):
-    with open(lb_labels_file, "r") as f:
-        lb_labels = json.load(f)
+    with open(ls_labels_file, "r") as f:
+        ls_labels = json.load(f)
 
     sly_project_folder = os.path.join(out_path, project_name)
     sly_labels_folder = os.path.join(out_path, project_name, dataset_name, "ann")
@@ -80,11 +80,11 @@ def main(
         print(filename)
         label = None
         img = Image.open(os.path.join(images_folder, filename))
-        for lb_label in lb_labels:
-            if lb_label["External ID"] == filename and isinstance(
-                lb_label["Label"], dict
+        for ls_label in ls_labels:
+            if ls_label["External ID"] == filename and isinstance(
+                ls_label["Label"], dict
             ):
-                label = lb_label["Label"]
+                label = ls_label["Label"]
                 break
 
         sly_label_file = os.path.join(
@@ -120,7 +120,7 @@ def main(
                         bbox_tags = bbox["flags"]
                         for tag_name in bbox_tags:
                             sly_tag = supervisely_tag_template()
-                            tag_name = naming_converter(tag_name, convert_tag=True)
+                            # tag_name = naming_converter(tag_name, convert_tag=True)
                             if tag_name not in fsoco_tags():
                                 print(
                                     f'\033[93mSkipped not supported tag: "{tag_name}"\033[0m'

@@ -99,6 +99,17 @@ def supervisely_bbox_template():
     return copy.deepcopy(template_format)
 
 
+def supervisely_polygon_template():
+    template_format = {
+        "description": "",
+        "geometryType": "polygon",
+        "tags": [],
+        "classTitle": "",
+        "points": {"exterior": [], "interior": []},
+    }
+    return copy.deepcopy(template_format)
+
+
 def supervisely_tag_template():
     template_format = {"name": "", "value": None}
     return copy.deepcopy(template_format)
